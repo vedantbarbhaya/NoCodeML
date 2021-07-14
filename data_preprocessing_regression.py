@@ -29,6 +29,7 @@ from scipy import stats
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import LabelBinarizer
 
 
 class dataPrep:
@@ -50,9 +51,12 @@ class dataPrep:
     __df_flag: TYPE : Bool
             DESCRIPTION : Flag indicating preprocessing of train set or
                           new data. If True then train set else new data
+                          
+    __encoder: TYPE : LabelBinarizer()
+            DESCRIPTION : To encode new/test data                     
     """
 
-    def __init__(self, dataset, y, df_flag=True):
+    def __init__(self, dataset, y, df_flag=True, encoder=None):
         """
         Constructor to initialize class. Initializes class variable __dataset
         with given dataframe.
@@ -63,7 +67,13 @@ class dataPrep:
             DESCRIPTION : Dataset given by user, converted to dataframe. 
 
         y :  TYPE : String
-            DESCRIPTION : Column header of dependant variable     
+            DESCRIPTION : Column header of dependant variable 
+            
+        df_flag: TYPE : Bool
+            DESCRIPTION : Flag inidcating train/test set
+            
+        encoder: TYPE : LabelBinarizer()
+            DESCRIPTION : encoder for new data   
 
         Returns
         -------
@@ -75,6 +85,7 @@ class dataPrep:
         self.__dataset = dataset
         self.__dependent_var = y
         self.__df_flag = df_flag
+        self.__encoder = encoder
 
     def handleMissingData(self, numFeatureList, catFeatureList):
         """
@@ -217,24 +228,42 @@ class dataPrep:
                 categorical features 
 
         """
-        # We will user one hot encoder to encode our categroical variables
-        # drop_first = true avoids the dummy variable trap
+        #We will use LabelBinarizer() to one hot encode our category variables
         if not catFeatureList:
-            return [] #No categrocial features to encode
+            return [], None #No categrocial features to encode
+        
+        if self.__df_flag:
+            
+            encoder_list = [0] * len(catFeatureList) #List of encoders for each categorical feature
+            for i in range(len(catFeatureList)):
+                encoder_list[i] = LabelBinarizer()
+                encoder_list[i].fit(self.__dataset[catFeatureList[i]])  
+                transformed = encoder_list[i].transform(self.__dataset[catFeatureList[i]])
+                columns = [encoder_list[i].classes_[j] for j in range(len(encoder_list[i].classes_))]
+                if len(encoder_list[i].classes_) == 2:
+                    del columns[-1]
+                    
+                ohe_df = pd.DataFrame(transformed, columns=columns)
+                self.__dataset = pd.concat([self.__dataset, ohe_df], axis=1).drop(catFeatureList[i], axis=1)
+                
+            encoder = encoder_list
 
-        dummies = pd.get_dummies(
-            self.__dataset[catFeatureList], drop_first=True)
+        else:
+            
+            encoder = self.__encoder
+            for i in range(len(catFeatureList)):
+                transformed = encoder[i].transform(self.__dataset[catFeatureList[i]])
+                columns = [encoder[i].classes_[j] for j in range(len(encoder[i].classes_))]
+                if len(encoder[i].classes_) == 2:
+                    del columns[-1]
+                    
+                ohe_df = pd.DataFrame(transformed, columns=columns, index=self.__dataset.index)
+                self.__dataset = pd.concat([self.__dataset, ohe_df], axis=1).drop(catFeatureList[i], axis=1)
 
-        # Concatenating dummies with dataset
-        self.__dataset = pd.concat([self.__dataset, dummies], axis=1)
+        convCatFeatureList = list(self.__dataset.select_dtypes(include=['object']).columns)
+        
 
-        # Drop the original cat variables as dummies are already created
-        self.__dataset.drop(catFeatureList, axis=1, inplace=True)
-
-        # New convCatFeatureList - converted cat feature
-        convCatFeatureList = list(dummies.columns)
-
-        return convCatFeatureList
+        return convCatFeatureList, encoder
 
     def featureEngineering(self):
         """
@@ -342,7 +371,7 @@ class dataPrep:
         self.__dataset = self.featureEngineering()
         
         # Encoding categorical features
-        convCatFeatureList = self.encodeCatFeatures(catFeatureList)
+        convCatFeatureList, encoder_cat = self.encodeCatFeatures(catFeatureList)
 
         # Getting our feature set and also index of numerical features
         X = self.__dataset.iloc[:, :].values
@@ -362,7 +391,7 @@ class dataPrep:
             regressionPrepOutput = {'Xtrain': X_train, 'Xtest': X_test,
                                     'Xindex': X_index, 'Ytrain': y_train, 'Ytest': y_test,
                                     'scaler': scaler, 'X': X, 'Y': Y, 'dataset': self.__dataset,
-                                    'datasetOriginal': self.__dataset_original,
+                                    'datasetOriginal': self.__dataset_original, 'encoder':encoder_cat,
                                     'dependentFeature': self.__dependent_var, 'encodedCatFeatures': convCatFeatureList,
                                     'numericalFeatures': numFeatureList, 'categoricalFeatures': catFeatureList,
                                     'dataProperties': data_properties, 'missingDataFlag': missingDataFlag,

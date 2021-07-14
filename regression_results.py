@@ -66,7 +66,9 @@ def predict_function(choice, dpr_output, model):
         return True
     
     #Data preprocessing
-    dpr_obj = dpr(test_df, dpr_output['dependentFeature'], df_flag)
+    #Encoding
+    encoder = dpr_output['encoder']
+    dpr_obj = dpr(test_df, dpr_output['dependentFeature'], df_flag, encoder)
     output = dpr_obj.preprocess()
     
     if output['missingDataFlag']:
@@ -96,11 +98,14 @@ def display(dpr_results, model_results):
     print("--------------------------")
     df = dpr_results['datasetOriginal']
     
+    
     if df.shape[0] > 2000:
         profile = ProfileReport(df, minimal=True)
     else:
         profile = ProfileReport(df)
+      
     profile.to_file("user_report.html")
+    
     
     print("\n")
     print("Open user_report.html")

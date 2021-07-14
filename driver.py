@@ -51,6 +51,7 @@ def runNoCodeML(dataPath):
         output = dpr_obj.preprocess()
         output['datasetOriginal'] = df_copy
         print("\nData preprocessing complete!")
+        #print(output['dataset'].head())
 
     else:
         #Data preprocesing for classification
@@ -86,7 +87,7 @@ def runNoCodeML(dataPath):
     
 
 if __name__ == "__main__":
-    runNoCodeML("/Users/vishalkundar/Desktop/ML/Datasets/Admission_Predict.csv")
+    runNoCodeML("/Users/vishalkundar/Desktop/ML/Datasets/CarPrice_Assignment.csv")
     
     
     
