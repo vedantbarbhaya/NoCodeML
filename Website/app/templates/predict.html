@@ -1,0 +1,28 @@
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/main.css') }}">
+    <link rel="import" href="file:///Users/vishalkundar/Downloads/Website/app/templates/index.html">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <table class="table table-dark table-striped">
+            <div class="frame">
+                {% include 'predtable.html' %}
+                <br />
+            </div>
+        </table>
+    </div>
+    <br><br>
+    <a href="/download_results">
+        <p>
+            <button class="button">Download as csv</button>
+        </p>
+    </a>
+</body>
+
+</html>

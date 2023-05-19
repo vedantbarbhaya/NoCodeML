@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel = "icon" href = 
+"https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_200X200.png" 
+        type = "image/x-icon">
+<title>No Code ML</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="topnav">
+	<a>No Code ML</a>
+	
+</div>
+
+<div class="flashes1">
+<h1 style="font-family:Helvetica"><strong>Select File to Upload</strong></h1> <br>
+<p>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+<ul class=flashes>
+	{% for message in messages %}
+	<li >{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+</p>
+</div>
+
+<div class="file_uploads">
+<form method="post" action="/uploads" enctype="multipart/form-data" class="upload1">
+	<dl>
+		<p>
+			<input type="file" class="form-control" id="customFile" name="file" autocomplete="off" required >
+		</p>
+	</dl>
+	<p> <br>
+		<input type="submit" value="Submit" >
+
+	</p>
+</form>
+
+<a href="/display_df">
+	<p>
+		<button class="button">Continue</button>
+	</p>
+</a>
+
+</div>
+{% endblock %}

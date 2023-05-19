@@ -1,0 +1,96 @@
+.button {
+    background-color:#000000;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    cursor: pointer;
+    /* margin: 5% 50%; */
+  }
+
+input[type=submit] {
+    background-color:#000000;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .topnav {
+    overflow: hidden;
+    background-color: rgb(0, 0, 0);
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+
+  
+
+  h1 {text-align: center;}
+  h2 {text-align: center;}
+  p {text-align: center;}
+
+  div#loading {
+    height: 100%;
+    width: 100%;
+    display: none;
+    background: url(loading_screen.gif) no-repeat;
+    cursor: wait;
+    }
+  
+  /* input[type="file"] {
+        display: none;
+    } */
+  /* .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    } */
+
+
+.file_uploads{
+  margin: 0 30%;
+}
+
+#file_uploads_id{
+  text-align: center;
+}
+
+
+.flashes1{
+  margin: 2% 40%;}
+
+  #form-div {
+    width:400px;
+    height:50px;
+    margin:0 auto;
+    text-align: center;
+}
+
+#form-div2 {
+  width:420px;
+  height:69px;
+  margin:0 auto;
+  text-align: center;
+}
+
+.table{
+  width: 50% ;
+  
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/main.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <title>Dashboard</title>
+  <div class="topnav">
+
+    <a>Data Dashboard</a>
+    
+  </div>
+  
+</head>
+
+<body>
+  <h2>Results</h2>  
+  <a href="/user_report">
+  <p>
+    <button class="button">View Feature Information</button>
+  </p>
+  </a>
+  <br>
+
+  <h2>Predict new data by uploading file below</h2>
+  <br>
+  <div class="file_uploads">
+  <form method="post" action="/predict" enctype="multipart/form-data">
+    <dl>
+      <p>
+        <input type="file" class="form-control" id="customFile" name="file" autocomplete="off" required >
+      </p>
+    </dl>
+    <p> <br>
+      <input type="submit" value="Submit" >
+  
+    </p>
+  </form>
+  </div>
+  <br>
+  <div id="form-div2">
+    {% include 'model-info.html' %}
+  </div>
+
+</body>
+
+</html>

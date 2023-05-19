@@ -1,0 +1,54 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="import" href="C:\No Code ML\Website\Website\app\templates\index.html">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/main.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <script type="text/javascript">// <![CDATA[
+    function loading() {
+      $("#loading").show();
+      $("#content").hide();
+      $("#form-div").hide();
+      $(".topnav").hide();
+    }
+// ]]></script>
+</head>
+
+
+
+<body>
+  
+<div class="topnav">
+
+	<a>No Code ML</a>
+	
+</div>
+
+  <div id="loading"> </div>
+  <div id="content">
+    <div class="container">
+      <br>
+      <br>
+      <table class="styled-table">
+        
+          {% include 'index.html' %}
+          <br />
+        
+      </table>
+    </div>
+  </div>
+
+  <div id="form-div">
+      <form method="POST" action="/results" enctype="multipart/form-data">
+        <label for="column"><p>Column whose value you want to predict</p></label> 
+        <input type="text" id="fname" name="depvar"><br><br>
+        <input type="submit" value="Submit" onclick="loading();">
+    </form>
+  </div>
+
+</body>
+
+</html>
